@@ -10,7 +10,7 @@ This repo includes the demo project for the following GDC 2023 talk
 
 This project contains three parts: a **Scriptable Render Pipeline** named **PMRP**, a **Visibility Baking Tool**, and a **Lightmapper**. 
 
-## Team Members
+## Project Members
 * [guoxx](https://github.com/guoxx) -
   **Xiaoxin Guo** <<guoxx@me.com>> (he/him)
 * [weakknight](https://github.com/weakknight) - **Tianyu Li** <<ltyucb@gmail.com>> (he/him)
