@@ -1,0 +1,78 @@
+#pragma kernel main
+//#pragma enable_d3d11_debug_symbols
+
+struct PackedVolumetricLightmapReceiver
+{
+    uint xyz;
+    uint irradiance0;
+    uint irradiance1;
+    uint irradiance2;
+};
+
+Texture3D<float4> _SrcVLM;
+RWTexture3D<float4> _DstVLM;
+
+float _Intensity0;
+float _Intensity1;
+float _Intensity2;
+
+int _ReceiverCount;
+StructuredBuffer<PackedVolumetricLightmapReceiver> _Receivers;
+
+uint3 UnpackR10G11B11ToUINT(uint xyz)
+{
+    const uint mask10Bit = (1U << 10) - 1U;
+    const uint mask11Bit = (1U << 11) - 1U;
+    uint x = xyz >> 22 & mask10Bit;
+    uint y = xyz >> 11 & mask11Bit;
+    uint z = xyz & mask11Bit;
+    return uint3(x, y, z);
+}
+
+float UnpackR8ToUFLOAT(uint r)
+{
+    const uint mask = (1U << 8) - 1U;
+    return (float)(r & mask) / (float)mask;
+}
+
+float4 UnpackR8G8B8A8ToUFLOAT(uint rgba)
+{
+    float r = UnpackR8ToUFLOAT(rgba);
+    float g = UnpackR8ToUFLOAT(rgba >> 8);
+    float b = UnpackR8ToUFLOAT(rgba >> 16);
+    float a = UnpackR8ToUFLOAT(rgba >> 24);
+    return float4(r, g, b, a);
+}
+
+float3 DecodeRGBM(float4 rgbm)
+{
+    float3 result = 6.0f * rgbm.rgb * rgbm.a;
+    return result * result;
+}
+
+float4 EncodeRGBM(float3 color)
+{
+    color = float3(sqrt(color.x), sqrt(color.y), sqrt(color.z)) / 6.0f;
+    float m = saturate(max(max(color.x, color.y), max(color.z, 1e-6f)));
+    m = ceil(m * 255.0f) / 255.0f;
+    color = float3(color.x / m, color.y / m, color.z / m);
+    return float4(color, m);
+}
+
+[numthreads(8, 1, 1)]
+void main(uint id : SV_DispatchThreadID)
+{
+    if (id >= (uint)_ReceiverCount)
+    {
+        return;
+    }
+
+    PackedVolumetricLightmapReceiver receiver = _Receivers[id];
+    uint3 location = UnpackR10G11B11ToUINT(receiver.xyz);
+
+    float3 irradiance0 = DecodeRGBM(UnpackR8G8B8A8ToUFLOAT(receiver.irradiance0));
+    float3 irradiance1 = DecodeRGBM(UnpackR8G8B8A8ToUFLOAT(receiver.irradiance1));
+    float3 irradiance2 = DecodeRGBM(UnpackR8G8B8A8ToUFLOAT(receiver.irradiance2));
+
+    _DstVLM[location] = EncodeRGBM(DecodeRGBM(_SrcVLM[location]) + _Intensity0 * irradiance0 + _Intensity1 * irradiance1 + _Intensity2 * irradiance2);
+}

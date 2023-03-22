@@ -1,0 +1,25 @@
+#pragma only_renderers d3d11
+#pragma kernel CSMain
+
+#include "../../../ShaderLib/GlobalConfig.cginc"
+
+// Keep in-sync with CommonUtils.ClearRawBufferData
+#define NUM_THREADS 256
+#define NUM_ITEMS_PER_THREAD 32
+
+RWByteAddressBuffer _Buffer;
+
+[numthreads(NUM_THREADS, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 groupThreadId : SV_GroupThreadID)
+{
+    uint length;
+    _Buffer.GetDimensions(length);
+
+    const uint start = groupId.x * NUM_THREADS * NUM_ITEMS_PER_THREAD * 4 + groupThreadId.x * 4;
+    const uint end = min(start + NUM_THREADS * NUM_ITEMS_PER_THREAD * 4, length);
+
+    for (uint address = start; address < end; address += NUM_THREADS *  4)
+    {
+        _Buffer.Store(address, 0);
+    }
+}

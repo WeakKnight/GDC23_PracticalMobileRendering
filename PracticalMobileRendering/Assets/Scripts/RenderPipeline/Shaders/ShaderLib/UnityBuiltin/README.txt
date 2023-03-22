@@ -1,0 +1,1 @@
+Copied from Unity 2019.4, file extension has been changed to .hlsl so that we can #include it explicitly.

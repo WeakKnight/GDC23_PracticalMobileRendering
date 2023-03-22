@@ -1,0 +1,17 @@
+<UXML xmlns:ui="UnityEngine.UIElements" xmlns:ue="UnityEditor.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="canvas">
+        
+        <uie:TwoPaneSplitView fixed-pane-index="0" fixed-pane-initial-size="100" orientation="vertical" buffer="100">
+        
+            <ui:ScrollView name="holderOutput" show-vertical-scroller="true" vertical-page-size="100">
+                <ui:TextField name="textAreaOutput" multiline="true" readonly="true" />
+            </ui:ScrollView>
+            
+            <ui:ScrollView name="holderCode" show-vertical-scroller="true" vertical-page-size="100">
+                <ui:TextField name="textAreaCode" multiline="true" />
+            </ui:ScrollView>
+            
+        </uie:TwoPaneSplitView>
+        
+    </ui:VisualElement>
+</UXML>

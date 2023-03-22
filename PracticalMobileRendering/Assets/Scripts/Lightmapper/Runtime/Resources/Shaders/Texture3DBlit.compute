@@ -1,0 +1,24 @@
+#pragma kernel Texture3DBlit
+
+#if defined(SHADER_API_GLES)
+[numthreads(8, 8, 8)]
+void Texture3DBlit(uint3 id : SV_DispatchThreadID)
+{
+}
+#else
+Texture3D<float4> SrcTex;
+RWTexture3D<float4> DstTex;
+
+uint3 TexDimension;
+
+[numthreads(8, 8, 8)]
+void Texture3DBlit(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id.xyz >= TexDimension))
+    {
+        return;
+    }
+    
+    DstTex[id.xyz] = SrcTex[id.xyz];
+}
+#endif

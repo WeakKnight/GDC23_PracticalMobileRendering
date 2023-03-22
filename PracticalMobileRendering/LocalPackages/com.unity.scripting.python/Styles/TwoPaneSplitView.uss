@@ -1,0 +1,70 @@
+.unity-two-pane-split-view {
+    flex-grow: 1;
+}
+
+.unity-two-pane-split-view--vertical {
+    flex-direction: column;
+}
+
+.unity-two-pane-split-view--horizontal {
+    flex-direction: row;
+}
+
+.unity-two-pane-split-view__content-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.unity-two-pane-split-view__handle-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 4px;
+}
+
+.unity-two-pane-split-view__dragline {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+}
+
+.unity-two-pane-split-view__dragline--horizontal {
+    width: 10px;
+    left: -5px;
+    top: 5px;
+    bottom: 5px;
+    cursor: resize-horizontal;
+}
+
+.unity-two-pane-split-view__dragline--vertical {
+    height: 10px;
+    top: -5px;
+    left: 5px;
+    right: 5px;
+    cursor: resize-vertical;
+}
+
+.unity-two-pane-split-view__dragline-anchor {
+    position: absolute;
+    background-color: rgb(150, 150, 150);
+}
+
+.unity-two-pane-split-view__dragline-anchor:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.unity-two-pane-split-view__dragline-anchor--horizontal {
+    width: 2px;
+    top: 5px;
+    bottom: 5px;
+}
+
+.unity-two-pane-split-view__dragline-anchor--vertical {
+    height: 2px;
+    left: 5px;
+    right: 5px;
+    top: -2px;
+}

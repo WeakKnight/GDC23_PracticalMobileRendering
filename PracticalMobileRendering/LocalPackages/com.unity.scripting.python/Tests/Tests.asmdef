@@ -1,0 +1,25 @@
+{
+    "name": "Unity.Scripting.Python.Tests",
+    "references": [
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Unity.Scripting.Python.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Python.Runtime.dll"
+    ],
+    "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS",
+    "UNITY_EDITOR_WIN || UNITY_EDITOR_OSX || UNITY_EDITOR_LINUX"
+  ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

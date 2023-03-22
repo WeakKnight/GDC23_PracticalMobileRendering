@@ -1,0 +1,65 @@
+#canvas {
+    flex-grow: 1;
+    align-content:flex-start;
+    padding: 4px;
+}
+
+label, input, textarea{
+    display: flex;
+}
+
+#holderOutput {
+    padding: 5px;
+}
+
+.unity-scroller--vertical {
+    top : 5px;
+    bottom : 7px; 
+}
+
+#textAreaOutput {
+    min-width : 100px;
+    min-height : 30px;
+    
+    -unity-text-align: upper-left;
+    align-content: flex-start;
+
+    flex-grow : 0;
+
+    background-color: rgb(150, 150, 150);
+}
+
+#textAreaOutput .unity-base-text-field__input {
+    cursor: arrow;
+}
+
+#holderCode {
+    padding: 5px;
+}
+
+#textAreaCode {
+    min-width : 100px;
+    min-height : 50px;
+
+    -unity-text-align: upper-left;
+    align-content: flex-start;
+
+    flex-grow : 0;
+
+    background-color: rgb(50, 50, 50);
+}
+
+#textAreaCode:focus {
+    background-color: rgb(25, 25, 25);
+}
+
+#unity-text-input {
+    padding: 10px;
+    -unity-text-align: upper-left;
+    white-space: normal;
+}
+
+#unity-content-container {
+    flex-grow: 1;
+    padding-right: 2px;
+}

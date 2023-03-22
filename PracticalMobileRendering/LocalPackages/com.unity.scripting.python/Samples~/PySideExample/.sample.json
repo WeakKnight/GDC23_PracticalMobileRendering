@@ -1,0 +1,4 @@
+{
+    "displayName" : "PySide Camera Selector",
+    "description" : "Demonstrates how to build a custom tool with a PySide UI with two-way interaction with Unity: it inspects the Unity scene to get the list of cameras, but also Unity tells the UI when cameras are added."
+}

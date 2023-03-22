@@ -1,0 +1,2 @@
+/PracticalMobileRendering/Assets/Environment/Modules/Textures/Floor_Mask_shiny.tif filter=lfs diff=lfs merge=lfs -text
+/PracticalMobileRendering/Assets/Resources/PrecomputedLighting/SampleScene_Lightmap_Receiver.asset filter=lfs diff=lfs merge=lfs -text

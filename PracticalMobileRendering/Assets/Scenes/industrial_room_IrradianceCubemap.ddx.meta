@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: c325b304242c8484bb735a59e0195f04
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: efc3697fd5fc1d54ca7678eb859805be, type: 3}
+  anisoLevel: 1
+  wrapMode: 1
+  filterMode: 1
+  sourceFormat: 20
+  textureDimension: 4
+  readable: 0
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 1
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 5
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0

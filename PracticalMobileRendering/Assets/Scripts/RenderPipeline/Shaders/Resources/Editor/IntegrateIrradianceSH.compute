@@ -1,0 +1,72 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+//#pragma enable_d3d11_debug_symbols
+
+#define NUM_THREADS 8
+
+#ifdef SHADER_API_D3D11
+#include "../../ShaderLib/GlobalConfig.cginc"
+#include "../../ShaderLib/SphericalHarmonics.cginc"
+#include "../../ShaderLib/ImageBasedLighting.cginc"
+
+Texture2D<float4> InputTex;
+SamplerState PointRepeatSampler;
+RWStructuredBuffer<SH9Color> OutputBuffer;
+
+groupshared SH9Color gs_shCoeffs[NUM_THREADS * NUM_THREADS];
+
+[numthreads(NUM_THREADS, NUM_THREADS, 1)]
+void CSMain (uint3 groupThreadId : SV_GroupThreadID)
+{
+    float2 texSize;
+    InputTex.GetDimensions(texSize.x, texSize.y);
+
+    SH9Color accum = (SH9Color)0;
+    int2 steps = int2(ceil(texSize/NUM_THREADS));
+    for (int y = 0; y < steps.y; ++y)
+    {
+        for (int x = 0; x < steps.x; ++x)
+        {
+            int2 st = int2(NUM_THREADS * x, NUM_THREADS * y) + groupThreadId.xy;
+            if (all(st < int2(texSize)))
+            {
+                float2 uv = (st + 0.5) / texSize;
+                float3 dir = sphericalCrdToDir(uv);
+
+                const float sinTheta = sqrt(1 - dir.y*dir.y);
+                float sampleWeight = 2 * UNITY_PI * UNITY_PI * sinTheta / (texSize.x * texSize.y);
+
+                float3 sampleValue = InputTex[st].xyz;
+#if SHADEROPTIONS_UNITY_PROJECT_GAMMA_COLOR_SPACE
+                sampleValue = GammaToLinearSpace(sampleValue);
+#endif 
+
+                //accum = SHAdd(accum, ProjectOntoSH9Color(dir, sampleValue * sampleWeight, CosineA0, CosineA1, CosineA2));
+                accum = SHAdd(accum, ProjectOntoSH9Color(dir, sampleValue * sampleWeight));
+            }
+        }
+    }
+
+    // divide by PI in order to keep consistent with irradiance map and ambient cube
+    accum = SHMul(accum, 1.0 / UNITY_PI);
+    gs_shCoeffs[groupThreadId.y * NUM_THREADS + groupThreadId.x] = accum;
+    AllMemoryBarrierWithGroupSync();
+
+    // TODO: optimization with parallel reduction
+    if (groupThreadId.x == 0 && groupThreadId.y == 0)
+    {
+        SH9Color result = (SH9Color)0;
+        for (int i = 0; i < NUM_THREADS * NUM_THREADS; ++i)
+        {
+            result = SHAdd(result, gs_shCoeffs[i]);
+        }
+
+        OutputBuffer[0] = result;
+    }
+}
+#else
+[numthreads(NUM_THREADS, NUM_THREADS, 1)]
+void CSMain(uint3 groupThreadId : SV_GroupThreadID)
+{
+}
+#endif

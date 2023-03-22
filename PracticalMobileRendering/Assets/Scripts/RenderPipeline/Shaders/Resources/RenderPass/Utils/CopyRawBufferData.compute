@@ -1,0 +1,33 @@
+#pragma only_renderers d3d11
+#pragma kernel CSMain
+
+#include "../../../ShaderLib/GlobalConfig.cginc"
+
+#define NUM_THREADS 64
+#define NUM_ITEMS_PER_THREAD 16
+
+RWByteAddressBuffer _SrcBuffer;
+int _SrcOffsetInBytes;
+int _SrcLengthInBytes;
+
+RWByteAddressBuffer _DstBuffer;
+int _DstOffsetInBytes;
+
+[numthreads(NUM_THREADS, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 groupThreadId : SV_GroupThreadID)
+{
+    uint dstLength;
+    _DstBuffer.GetDimensions(dstLength);
+
+    int start = groupId.x * NUM_THREADS * NUM_ITEMS_PER_THREAD * 4 + groupThreadId.x * 4;
+    int end = start + NUM_THREADS * NUM_ITEMS_PER_THREAD * 4;
+
+    int lengthInBytes = min(_SrcLengthInBytes, max((int)dstLength - _DstOffsetInBytes, 0));
+    end = min(end, lengthInBytes);
+
+    for (uint address = start; address < end; address += NUM_THREADS *  4)
+    {
+        uint v = _SrcBuffer.Load(_SrcOffsetInBytes + address);
+        _DstBuffer.Store(_DstOffsetInBytes + address, v);
+    }
+}

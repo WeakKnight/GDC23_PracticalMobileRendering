@@ -1,0 +1,27 @@
+{
+  "name": "com.unity.scripting.python",
+  "displayName": "Python Scripting",
+  "version": "7.0.0-pre.1",
+  "unity": "2020.3",
+  "description": "Python Scripting is an integration of the open-source Python for .NET project. This package provides the means to import the Python Runtime Environment as a namespace and execute Python scripts from the Unity Editor.",
+  "keywords": [
+    "python",
+    "python.net"
+  ],
+  "category": "Editor",
+  "upmCi": {
+    "footprint": "9b912739ee7180a8981daf10f75d53ea6bf62fc2"
+  },
+  "repository": {
+    "url": "https://github.cds.internal.unity3d.com/unity/com.unity.scripting.python.git",
+    "type": "git",
+    "revision": "19e10423eeda1a48789ef0eda2ad9e56cf0722e0"
+  },
+  "samples": [
+    {
+      "displayName": "PySide Camera Selector",
+      "description": "Demonstrates how to build a custom tool with a PySide UI with two-way interaction with Unity: it inspects the Unity scene to get the list of cameras, but also Unity tells the UI when cameras are added.",
+      "path": "Samples~/PySideExample"
+    }
+  ]
+}

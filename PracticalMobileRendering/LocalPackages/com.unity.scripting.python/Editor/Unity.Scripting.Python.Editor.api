@@ -1,0 +1,66 @@
+// This file is generated. Do not modify by hand.
+// XML documentation file not found. To check if public methods have XML comments,
+// make sure the XML doc file is present and located next to the scraped dll
+namespace UnityEditor.Scripting.Python
+{
+    public class CreateMenuItemWindow : EditorWindow, System.IDisposable
+    {
+        public CreateMenuItemWindow() {}
+        public void Dispose();
+        protected virtual void Dispose(bool disposing);
+        public void OnEnable();
+        public static void ShowWindow(string codeToSave);
+    }
+
+    public class PythonConsoleWindow : EditorWindow
+    {
+        public PythonConsoleWindow() {}
+        public static void AddToOutput(string input);
+        public void OnEnable();
+        [MenuItem(@"Window/General/Python Console")] public static void ShowWindow();
+    }
+
+    public class PythonInstallException : System.Exception
+    {
+        public override string Message { get; }
+        public PythonInstallException() {}
+        public PythonInstallException(string msg) {}
+        protected PythonInstallException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext ctx) {}
+        public PythonInstallException(string msg, System.Exception innerException) {}
+    }
+
+    public static class PythonRunner
+    {
+        public static bool IsInitialized { get; }
+        public static string PythonInterpreter { get; }
+        public static string PythonVersion { get; }
+        public static void AddToSitePackages(System.Collections.Generic.IEnumerable<string> sitePackages);
+        public static void AddToSitePackages(string sitePackage);
+        public static void EnsureInitialized();
+        public static void RunFile(string pythonFileToExecute, string scopeName = default(string));
+        public static void RunString(string pythonCodeToExecute, string scopeName = default(string));
+        public static System.Diagnostics.Process SpawnProcess(string programName, System.Collections.Generic.IEnumerable<string> arguments = default(System.Collections.Generic.IEnumerable<string>), System.Collections.Generic.Dictionary<string, string> environment = default(System.Collections.Generic.Dictionary<string, string>), bool showWindow = false, bool useShell = false, bool redirectOutput = false, bool redirectInput = false);
+        public static System.Diagnostics.Process SpawnPythonProcess(System.Collections.Generic.IEnumerable<string> arguments = default(System.Collections.Generic.IEnumerable<string>), System.Collections.Generic.Dictionary<string, string> environment = default(System.Collections.Generic.Dictionary<string, string>), bool showWindow = false, bool useShell = false, bool redirectOutput = false, bool redirectInput = false);
+        public static void SpawnShell();
+    }
+
+    public sealed class PythonSettings : UnityEngine.ScriptableObject
+    {
+        public const string kDefaultPython = @"Library/PythonInstall/python.exe";
+        public const string kDefaultPythonDirectory = @"Library/PythonInstall";
+        public static string kDefaultPythonFullPath { get; }
+        public static string PythonNetVersion { get; }
+        public static string Version { get; }
+        public static string[] GetSitePackages();
+    }
+}
+
+namespace UnityEditor.Scripting.Python.Packages
+{
+    public class PipPackages
+    {
+        public PipPackages() {}
+        public static bool AddPackage(string package);
+        public static bool AddPackages(System.Collections.Generic.IEnumerable<string> packages);
+    }
+}

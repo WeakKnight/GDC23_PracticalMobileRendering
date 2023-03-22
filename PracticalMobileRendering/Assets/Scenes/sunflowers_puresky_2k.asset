@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b59b901290a1bde4db602953cbb78a02, type: 3}
+  m_Name: sunflowers_puresky_2k
+  m_EditorClassIdentifier: 
+  PanoramicMap: {fileID: 2800000, guid: 8bdcd8e3041882c4681aa34d31c4628f, type: 3}
+  EnvmapGgxFiltered: {fileID: 6725414380139112618, guid: a1ff31bb3d051e24f80f4cd9c5ee7616, type: 3}
+  IrradianceSH9Coeffs:
+  - {x: 0.78318274, y: 0.8144804, z: 0.82918555, w: 1}
+  - {x: -0.34356254, y: -0.33993378, z: -0.32633454, w: 1}
+  - {x: 0.9161675, y: 0.890837, z: 0.77564687, w: 1}
+  - {x: -0.65958416, y: -0.640755, z: -0.558663, w: 1}
+  - {x: 0.4090686, y: 0.38784787, z: 0.3287135, w: 1}
+  - {x: -0.56682754, y: -0.5380186, z: -0.4560894, w: 1}
+  - {x: 0.61550564, y: 0.6019144, z: 0.5274377, w: 1}
+  - {x: -1.1006523, y: -1.053294, z: -0.9002943, w: 1}
+  - {x: 0.336371, y: 0.3424421, z: 0.3145187, w: 1}
