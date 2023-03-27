@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
@@ -485,6 +486,36 @@ namespace PMRP
 
             public static async Task Open()
             {
+                bool IsPortAvailable(int port)
+                {
+                    // Get the list of active TCP connections
+                    var tcpConnections = IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners();
+
+                    // Check if any connection is using the specified port
+                    foreach (var tcpConnection in tcpConnections)
+                    {
+                        if (tcpConnection.Port == port)
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+
+                int FindValidPort()
+                {
+                    for (int portCandidate = 20000; portCandidate < 30000; portCandidate++)
+                    {
+                        if (IsPortAvailable(portCandidate))
+                        {
+                            return portCandidate;
+                        }
+                    }
+
+                    return -1;
+                }
+
                 string workingDirectory = EditorUtils.GetWorkingDirectory();
                 string lightmapperDirPath = Path.GetFullPath(Application.dataPath + @"\Scripts\Lightmapper\Bin~");
 
@@ -493,8 +524,18 @@ namespace PMRP
                 processStartInfo.WorkingDirectory = workingDirectory;
                 processStartInfo.UseShellExecute = true;
                 var date = DateTime.Now;
-                processStartInfo.ArgumentList.Add("--log " + workingDirectory + "/logs/" + SceneManager.GetActiveScene().name + "_" + date.Month.ToString() + "_" + date.Day.ToString() + "_" + date.Hour.ToString() + ".txt");
-                var process = Process.Start(processStartInfo);
+                Port = FindValidPort();
+                if (Port == -1)
+                {
+                    UnityEngine.Debug.LogError("Can not find valid port");
+                    return;
+                }
+                else
+                {
+                    UnityEngine.Debug.Log("Running lightmapper at port: " + Port.ToString());
+                }
+                processStartInfo.Arguments = "--log " + workingDirectory + "/logs/" + SceneManager.GetActiveScene().name + "_" + date.Month.ToString() + "_" + date.Day.ToString() + "_" + date.Hour.ToString() + ".txt" + " --port=" + Port.ToString();
+                Process.Start(processStartInfo);
 
                 await IsRunning();
             }
@@ -538,8 +579,7 @@ namespace PMRP
 
             static async Task UberCall(string name, string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "")
             {
-                string msg = await GetStringAsync(string.Format("http://127.0.0.1:23641/uber_api?name={0}&arg0={1}&arg1={2}&arg2={3}&arg3={4}", name, arg0, arg1, arg2, arg3));
-                UnityEngine.Debug.Log(msg);
+                await GetStringAsync(string.Format("http://127.0.0.1:{0}/uber_api?name={1}&arg0={2}&arg1={3}&arg2={4}&arg3={5}", Port, name, arg0, arg1, arg2, arg3));
             }
 
             static async Task IsRunning()
@@ -549,7 +589,7 @@ namespace PMRP
                 {
                     try
                     {
-                        var content = await GetStringAsync("http://127.0.0.1:23641/running");
+                        var content = await GetStringAsync("http://127.0.0.1:" + Port.ToString() + "/running");
                         var result = int.Parse(content);
                         if (result == 1)
                         {
@@ -566,10 +606,12 @@ namespace PMRP
 
             static async Task<bool> IsFinished()
             {
-                var content = await GetStringAsync("http://127.0.0.1:23641/baking_state");
+                var content = await GetStringAsync("http://127.0.0.1:" + Port.ToString() + "/baking_state");
                 var result = int.Parse(content);
                 return result == 1;
             }
+
+            private static int Port;
         }
     }
 }
