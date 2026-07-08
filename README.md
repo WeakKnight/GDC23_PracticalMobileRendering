@@ -24,9 +24,15 @@ This project contains three parts: a **Scriptable Render Pipeline** named **PMRP
 - **Specular Occlusion**
 - Platform-agnostic **Shadow Bias**
 
-## Visibility Tool (Will Be Available Soon)
+## Visibility Tool
 #### Feature
 - **Visibility Baking** with least square vertex optimization
+- Python implementation for vertex visibility baking is included at
+  `PracticalMobileRendering/Assets/Scripts/RenderPipeline/Editor/PythonScripts/vertex_visibility_baking_least_square_fit.py`
+- The solver uses `numpy` and `scipy` from `PracticalMobileRendering/ProjectSettings/requirements.txt`, with
+  `clr_array_convert.py` handling NumPy/.NET array conversion for Unity's Python integration
+- Baked visibility data is consumed by the `DefaultLit` shader through `TEXCOORD2`; the Adam sample already includes
+  generated `*_visibility.asset` meshes under `PracticalMobileRendering/Assets/Resources/Adam/Geo/`
 
 ## Lightmapper
 #### Feature
